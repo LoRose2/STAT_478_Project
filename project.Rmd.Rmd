@@ -10,7 +10,7 @@ output:
 
 ```{r}
 library(readr)
-project.data <- read_csv("C:\\Users\\Zeke7_5xk9b3z\\Documents\\Project CSV.csv")
+project.data <- read_csv("RIRA10Y.csv")
 project.ts <- ts(project.data$REAINTRATREARAT10Y)
 plot(project.ts)
 project_acf=acf(project.data, lag.max=25,type="correlation",main="ACF of Project Data")
