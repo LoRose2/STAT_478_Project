@@ -1,0 +1,51 @@
+---
+title: "STAT 478 Project"
+author: "Logan Rosentreter & Zachary Kern"
+date: "Mar 19, 2023"
+header-includes:
+  - \usepackage{pdfpages}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = TRUE)
+```
+
+```{r package}
+# check if `tidyr` package is installed;
+# otherwise, install and load if 'tidyr' is absent
+if(!require('tidyr'))
+install.packages('tidyr', repos = 'https://cloud.r-project.org')
+
+# load libraries
+
+#rename
+library(dplyr)
+```
+
+---
+
+```{r}
+# read in data set
+int_rate <- read.csv("RIRA10Y.csv")
+
+# rename columns for easier data manipulation
+int_rate <- int_rate %>% 
+    rename("INT_RATE_10Y" = REAINTRATREARAT10Y)
+
+# convert date to type(date)
+int_rate <- int_rate %>%
+    mutate(DATE = as.Date(DATE, sep="-", "%Y-%m-%d"))
+str(int_rate)
+```
+Testing first change
+1. Problem definition
+
+2. Data description
+
+3. Data Analysis
+
+4. Model specification and fitting
+
+5. Model validation and diagnostics
+
+6. Forecasting
