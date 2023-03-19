@@ -24,6 +24,10 @@ library(dplyr)
 
 ---
 
+# Overview
+
+The 10-Year Real Interest Rate is a commonly used economic indicator that reflects the average annual return on investments adjusted for inflation over a 10-year period. The Fred STL dataset tracks the 10-Year Real Interest Rate in the United States, providing valuable insights into the state of the economy and the financial market. The 10-Year Real Interest Rate is an important indicator for investors, policymakers, and economists because it provides a measure of the real cost of borrowing and the expected return on investment. When the 10-Year Real Interest Rate is low, it can stimulate economic growth by making borrowing cheaper and encouraging investment. Conversely, when the 10-Year Real Interest Rate is high, it can restrict economic growth by increasing the cost of borrowing and reducing investment.
+
 ```{r}
 # read in data set
 int_rate <- read.csv("RIRA10Y.csv")
@@ -36,7 +40,12 @@ int_rate <- int_rate %>%
 int_rate <- int_rate %>%
     mutate(DATE = as.Date(DATE, sep="-", "%Y-%m-%d"))
 str(int_rate)
+
+int.ts <- ts(int_rate$INT_RATE_10Y)
+plot(int.ts)
+int_acf=acf(int_rate, lag.max=25,type="correlation",main="ACF of Project Data")
 ```
+
 Testing first change
 1. Problem definition
 
