@@ -26,7 +26,7 @@ library(dplyr)
 
 # Overview
 
-The 10-Year Real Interest Rate is a commonly used economic indicator that reflects the average annual return on investments adjusted for inflation over a 10-year period. The Fred STL dataset tracks the 10-Year Real Interest Rate in the United States, providing valuable insights into the state of the economy and the financial market. The 10-Year Real Interest Rate is an important indicator for investors, policymakers, and economists because it provides a measure of the real cost of borrowing and the expected return on investment. When the 10-Year Real Interest Rate is low, it can stimulate economic growth by making borrowing cheaper and encouraging investment. Conversely, when the 10-Year Real Interest Rate is high, it can restrict economic growth by increasing the cost of borrowing and reducing investment.
+The Fred STL dataset tracks the 10-Year Real Interest Rate in the United States. The 10-Year Real Interest Rate provides valuable insights into the state of the economy and the financial market, as it provides a measure of the real cost of borrowing and the expected return on investment. When the 10-Year Real Interest Rate is low, it can stimulate economic growth by making borrowing cheaper and encouraging investment. When the 10-Year Real Interest Rate is high, it can restrict economic growth by increasing the cost of borrowing and reducing investment.
 
 ```{r}
 # read in data set
