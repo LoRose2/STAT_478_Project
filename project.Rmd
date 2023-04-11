@@ -24,24 +24,24 @@ library(dplyr)
 
 # Introduction
 
-The Fred STL dataset tracks the 10-Year Real Interest Rate in the United States. The 10-Year Real Interest Rate provides valuable insights into the state of the economy and the financial market, as it provides a measure of the real cost of borrowing and the expected return on investment. When the 10-Year Real Interest Rate is low, it can stimulate economic growth by making borrowing cheaper and encouraging investment. When the 10-Year Real Interest Rate is high, it can restrict economic growth by increasing the cost of borrowing and reducing investment.
+The Fred STL dataset tracks the [10-Year Real Interest Rate](https://fred.stlouisfed.org/series/REAINTRATREARAT10Y) in the United States. The 10-Year Real Interest Rate provides valuable insights into the state of the economy and the financial market, as it provides a measure of the real cost of borrowing and the expected return on investment. When the 10-Year Real Interest Rate is low, it can stimulate economic growth by making borrowing cheaper and encouraging investment. When the 10-Year Real Interest Rate is high, it can restrict economic growth by increasing the cost of borrowing and reducing investment.
 
 ```{r}
 # read in data set
-int_rate <- read.csv("RIRA10Y.csv")
+int.rate <- read.csv("RIRA10Y.csv")
 
 # rename columns for easier data manipulation
-int_rate <- int_rate %>% 
+int.rate <- int.rate %>% 
     rename("INT_RATE_10Y" = REAINTRATREARAT10Y)
 
 # convert date to type(date)
-int_rate <- int_rate %>%
+int.rate <- int.rate %>%
     mutate(DATE = as.Date(DATE, sep="-", "%Y-%m-%d"))
-str(int_rate)
+str(int.rate)
 
-int.ts <- ts(int_rate$INT_RATE_10Y)
+int.ts <- ts(int.rate$INT_RATE_10Y)
 plot(int.ts)
-int_acf=acf(int_rate$INT_RATE_10Y, lag.max=50, type="correlation", main="ACF of Project Data")
+int_acf=acf(int.rate$INT_RATE_10Y, lag.max=50, type="correlation", main="ACF of Project Data")
 ```
 
 # 1. Problem definition
