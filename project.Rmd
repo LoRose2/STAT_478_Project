@@ -82,7 +82,7 @@ library(astsa)
 
 ## evaluation
 
-* ME, MAD, MSE, MPE, MAPE
+- ME, MAD, MSE, MPE, MAPE
 
 # 1. Problem definition / Introduction
 
@@ -117,7 +117,8 @@ plot(variogram(int.ts, 50), pch=19, cex=0.65)
 
 ```{r}
 int.lm <- lm(int.ts ~ int.rate$DATE)
-plot(int.lm)
+summary(int.lm)
+anova(int.lm)
 ```
 
 
@@ -138,7 +139,8 @@ plot(variogram(dint.ts, 50), pch=19, cex=0.65)
 
 ```{r}
 dint.lm <- lm(dint.ts ~ int.rate$DATE[-1])
-plot(dint.lm)
+summary(dint.lm)
+anova(dint.lm)
 ```
 
 
@@ -157,3 +159,6 @@ plot(dint.lm)
 # 6. Forecasting
 
 # Conclusion
+
+--
+
