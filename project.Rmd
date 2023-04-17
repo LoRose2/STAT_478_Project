@@ -2,29 +2,91 @@
 title: "STAT 478 Project"
 author: "Logan Rosentreter & Zachary Kern"
 date: "Mar 19, 2023"
+bibliography: source.bib
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = TRUE)
 ```
 
+```{r funtions}
+# Define a function variogram
+variogram <- function (x, lag) {
+  Lag <- NULL
+  var_k <- NULL
+  vario <- NULL
+  for (k in 1:lag){
+    Lag[k] <- k
+    var_k[k] = (sd(diff(x,k)))^2
+    vario[k] = var_k[k] / var_k[1]
+  }
+  return (as.data.frame( cbind (Lag , vario )))
+}
+```
+
 ```{r package}
 # check if `tidyr` package is installed;
 # otherwise, install and load if 'tidyr' is absent
-if(!require('tidyr'))
-install.packages('tidyr', repos = 'https://cloud.r-project.org')
+if(!require('astsa'))
+install.packages('astsa', repos = 'https://cloud.r-project.org')
 
 # load libraries
 
 #rename
 library(dplyr)
+
+# acf2
+library(astsa)
 ```
 
 ---
 
-# Introduction
+# Things to include
 
-The Fred STL dataset tracks the [10-Year Real Interest Rate](https://fred.stlouisfed.org/series/REAINTRATREARAT10Y) in the United States. The 10-Year Real Interest Rate provides valuable insights into the state of the economy and the financial market, as it provides a measure of the real cost of borrowing and the expected return on investment. When the 10-Year Real Interest Rate is low, it can stimulate economic growth by making borrowing cheaper and encouraging investment. When the 10-Year Real Interest Rate is high, it can restrict economic growth by increasing the cost of borrowing and reducing investment.
+- plot, acf, variogram, (decompose)
+- qqplot, aug dick full,
+- white noise test : box-pierce
+- normality test : anderson-darling
+- auotcorrelation & time series regression : dwt
+- auotcorrelation & regression : cochrane orcutt
+- auotcorrelation : Ljung-Box
+
+## general approach
+
+1. plot 
+
+  - determine basic features
+
+    - trend, season, outliers
+
+2. elimin trend, seas
+
+  - diff
+
+  - apply appropriate model
+
+3. develop forecast model for residuals
+
+4. validate performance
+
+- split-sample
+
+- cross-validation
+ 
+5. find diff b/n orig and forecast / smoothed
+
+6. find prediction intervals of forecast
+
+7. develop procedure for detecting deterioration in forecast, quickly
+ 
+
+## evaluation
+
+* ME, MAD, MSE, MPE, MAPE
+
+# 1. Problem definition / Introduction
+
+The Fred STL dataset tracks the [10-Year Real Interest Rate](https://fred.stlouisfed.org/series/REAINTRATREARAT10Y) in the United States [@fred_10yr_intrate]. The 10-Year Real Interest Rate provides valuable insights into the state of the economy and the financial market, as it provides a measure of the real cost of borrowing and the expected return on investment. When the 10-Year Real Interest Rate is low, it can stimulate economic growth by making borrowing cheaper and encouraging investment. When the 10-Year Real Interest Rate is high, it can restrict economic growth by increasing the cost of borrowing and reducing investment.
 
 ```{r}
 # read in data set
@@ -39,12 +101,50 @@ int.rate <- int.rate %>%
     mutate(DATE = as.Date(DATE, sep="-", "%Y-%m-%d"))
 str(int.rate)
 
-int.ts <- ts(int.rate$INT_RATE_10Y)
+int.ts <- ts(int.rate$INT_RATE_10Y, freq=12)
+plot(decompose(int.ts))
 plot(int.ts)
-int_acf=acf(int.rate$INT_RATE_10Y, lag.max=50, type="correlation", main="ACF of Project Data")
+int_acf2 <- acf2(int.ts, max.lag = 50)
+plot(variogram(int.ts, 50), pch=19, cex=0.65)
 ```
 
-# 1. Problem definition
+## notes - orig
+
+* data shows down trend, no seas
+* noncons mean, cons variance
+* acf -> nonstation
+* variogram -> monotonically increasing for long period of time -> nonstat
+
+```{r}
+int.lm <- lm(int.ts ~ int.rate$DATE)
+plot(int.lm)
+```
+
+
+```{r}
+# differenced data
+dint.ts <- diff(int.ts)
+plot(dint.ts)
+dint.acf2 <- acf2(dint.ts)
+plot(variogram(dint.ts, 50), pch=19, cex=0.65)
+```
+
+## notes - diff
+
+* data shows no trend, no seas, rand scatter
+* cons mean, cons variance
+* acf -> station
+* variogram -> random scatter -> stat
+
+```{r}
+dint.lm <- lm(dint.ts ~ int.rate$DATE[-1])
+plot(dint.lm)
+```
+
+
+## notes - log trans
+
+* cant use logarithm, because of negatives
 
 # 2. Data description
 
