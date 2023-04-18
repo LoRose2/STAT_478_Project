@@ -78,7 +78,8 @@ library(astsa)
 6. find prediction intervals of forecast
 
 7. develop procedure for detecting deterioration in forecast, quickly
- 
+
+# also want to use prophet 
 
 ## evaluation
 
