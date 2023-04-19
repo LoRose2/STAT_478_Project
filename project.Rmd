@@ -169,7 +169,7 @@ int.rate.prophet <- int.rate %>%
 
 # implementing prophet
 m <- prophet(int.rate.prophet)
-future <- make_future_dataframe(m, freq=12, periods = 12)
+future <- make_future_dataframe(m, freq='month', periods = 12)
 forecast <- predict(m, future)
 plot(m, forecast)
 prophet_plot_components(m, forecast)
