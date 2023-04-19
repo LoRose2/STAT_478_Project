@@ -9,7 +9,7 @@ bibliography: source.bib
 knitr::opts_chunk$set(echo = TRUE, tidy.opts = list(width.cutoff = 60), tidy = TRUE)
 ```
 
-```{r funtions}
+```{r funtions, include=F}
 # Define a function variogram
 variogram <- function (x, lag) {
   Lag <- NULL
@@ -24,11 +24,11 @@ variogram <- function (x, lag) {
 }
 ```
 
-```{r package}
+```{r package, include=F}
 # check if `tidyr` package is installed;
 # otherwise, install and load if 'tidyr' is absent
-if(!require('astsa'))
-install.packages('astsa', repos = 'https://cloud.r-project.org')
+if(!require('prophet'))
+install.packages('prophet', repos = 'https://cloud.r-project.org')
 
 # load libraries
 
@@ -37,6 +37,12 @@ library(dplyr)
 
 # acf2
 library(astsa)
+
+# auto.arima
+library(forecast)
+
+# prophet
+library(prophet)
 ```
 
 ---
@@ -143,6 +149,32 @@ dint.lm <- lm(dint.ts ~ int.rate$DATE[-1])
 summary(dint.lm)
 anova(dint.lm)
 ```
+
+```{r holtwinters}
+int.ses <- HoltWinters(int.ts)
+plot(int.ses)
+int.ses.for <- forecast(int.ses, h=12)
+plot(int.ses.for)
+```
+
+
+```{r arima}
+int.arima <- auto.arima(int.ts)
+plot(forecast(int.arima))
+```
+
+```{r prophet}
+int.rate.prophet <- int.rate %>%
+    rename(ds = DATE, y = INT_RATE_10Y)
+
+# implementing prophet
+m <- prophet(int.rate.prophet)
+future <- make_future_dataframe(m, freq=12, periods = 12)
+forecast <- predict(m, future)
+plot(m, forecast)
+prophet_plot_components(m, forecast)
+```
+
 
 
 ## notes - log trans
